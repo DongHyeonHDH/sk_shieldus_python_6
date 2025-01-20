@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!-- <link rel="stylesheet" type ="text/css" href ="{{url_for('static', filename='style.css')}}""> -->
+</head>
+<body>    
+    <h1>추천 여행 도시</h1>
+    
+    <span class="date">Today: {{    weather_data[0]['update_time']  }}</span>
+    <table border= "1">
+        <tr>
+            <td>도시</td>
+            <td>체감 온도</td>
+            <td>날씨</td>
+            <td>자세한 날씨 정보</td>
+        </tr>
+        {% for data in weather_data %}
+        <tr>
+            <td>{{ data["city"] }}</td>
+            <td>{{ data["weather"] }}</td>
+            <td>{{ data["temp"] }}</td>
+            <td>{{ data["detail"] }}</td>            
+        </tr>
+        {% endfor %}
+    </table>
+    
+    </form>
+</body>
+</html>

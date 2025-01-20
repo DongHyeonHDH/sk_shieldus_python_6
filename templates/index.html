@@ -1,16 +1,25 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>이메일 전송하기</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
-    <h1>여행지 날씨 정보</h1>
-    <button onclick="location.href='https://example.com/recommended-cities'">추천 여행도시</button>
-    <button onclick="location.href='https://example.com/hot-countries'">더운나라</button>
-    <button onclick="location.href='https://example.com/cold-countries'">추운나라</button>
+    <div class="container">
+        <h1>이메일 전송하기</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <table>
+                <tr>
+                    <td>수신인 메일 주소 :</td>
+                    <td><input type="email" name="email" required></td>
+                    <td><button type="submit">전송</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </body>
 </html>
+
