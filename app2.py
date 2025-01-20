@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file
 import requests
 import json, os
 import pandas as pd
@@ -98,7 +99,6 @@ def recommand_hwang():
         # apikey = os.getenv("API_KEY")    # API 키
         lang = "kr"       
         api =  f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
-
 
         # API 요청
         result = requests.get(api)
