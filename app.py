@@ -3,7 +3,7 @@ import json
 import pandas as pd
 
 # API 요청 정보
-city = "Seoul, london, tokyo, new york, paris, sydney"                                # 해당 지역
+city = "seoul"                               # 해당 지역
 apikey = "e2599548788383434c665766baafeb57"   # API 키
 lang = "kr"                                   # 언어
 api = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
