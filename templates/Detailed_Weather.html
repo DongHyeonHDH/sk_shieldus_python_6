@@ -117,6 +117,12 @@
 </head>
 <body>
     <div class="container">
+        <div class="city-input">
+            <form action="{{ url_for('get_weather_data') }}" method="get">
+                <input type="text" name="city" placeholder="도시 이름을 입력하세요" required>
+                <button type="submit">검색</button>
+            </form>
+        </div>
         <div class="header">
             <h1>자세한 날씨</h1>
             <p class="city-name">{{ city }}</p>
