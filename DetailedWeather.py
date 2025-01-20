@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import requests
 from dotenv import load_dotenv
 import os
@@ -37,9 +37,9 @@ def translate_weather(description):
     }
     return weather_conditions.get(description, description)
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def get_weather_data():
-    city = request.args.get('city', default="Seoul", type=str)
+    city = "Seoul"
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
     forecast_url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric'
     
