@@ -41,7 +41,13 @@ def recommand_hwang():
         if w_data["temp"] > 12 and w_data["temp"] < 32:
             weather_data.append(w_data)    
         
-
+        # 새로 추가가
+        with open(f"static/{link_city}", "w", encoding="utf-8") as f:
+            f.write(f"<h1>{city}의 날씨</h1>")
+            f.write(f"<p>체감 온도: {w_data['temp']} °C</p>")
+            f.write(f"<p>날씨: {w_data['weather']}</p>")
+            f.write(f"<p>업데이트 시간: {c_time}</p>")
+        
         
     
     
