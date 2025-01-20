@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/static/style.css">
+
 </head>
 <body>
-    
     <h1>여행지 날씨 정보</h1>
-    <button onclick="location.href='https://example.com/recommended-cities'">추천 여행도시</button>
+    <a href="{{ url_for('recommand_hwang') }}">
+        <button>추천 나라</button>
+    </a>
     <button onclick="location.href='https://example.com/hot-countries'">더운나라</button>
     <button onclick="location.href='https://example.com/cold-countries'">추운나라</button>
 </body>
