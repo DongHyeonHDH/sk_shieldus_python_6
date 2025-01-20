@@ -31,7 +31,7 @@ def home():
             "description": weather_data["weather"][0]["description"],
             "region": weather_data["name"],  # 지역 이름 추가
         }
-        return render_template("index2.html", weather=weather_info)
+        return render_template("simpleweather.html", weather=weather_info)
     else:
         return f"OpenWeatherMap API 호출 실패: {response.status_code}"
 
