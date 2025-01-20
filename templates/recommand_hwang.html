@@ -22,7 +22,8 @@
             <td>{{ data["city"] }}</td>
             <td>{{ data["weather"] }}</td>
             <td>{{ data["temp"] }}</td>
-            <td>{{ data["detail"] }}</td>            
+            <td>{{ data["detail"] }}</td> 
+            <!-- <td><a href="{{ url_for('static', filename='recommand_' + city['city'] + '.html') }}">자세히 보기</a></td>       -->    
         </tr>
         {% endfor %}
     </table>
