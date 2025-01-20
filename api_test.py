@@ -5,7 +5,7 @@ city = "Seoul"                                #해당지역
 apikey = "e2599548788383434c665766baafeb57"   #api키 (무료 키 - 송승현)
 lang = "kr"                                   #언어 
  
-api = f"""http://api.openweathermap.org/data/2.5/\
+api = f"""http://api.openweathermap.org/data/2.5/
 weather?q={city}&appid={apikey}&lang={lang}&units=metric"""
  
 result = requests.get(api)
