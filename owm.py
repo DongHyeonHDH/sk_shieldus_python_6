@@ -21,7 +21,7 @@ weather_translation = {
 }
 
 
-city_names_kor = ["서울", "도쿄", "워싱턴", "모스크바", "파리"]
+city_names_kor = ["Seoul", "Tokyo", "Wasington", "Moscov", "Paris"]
 weather_data = []
 
 for city_name_kor in city_names_kor:
