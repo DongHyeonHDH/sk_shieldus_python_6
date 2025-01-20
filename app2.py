@@ -1,11 +1,33 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import requests
 import json, os
 import pandas as pd
 from datetime import datetime
 from dotenv import load_dotenv
-
+from openpyxl import Workbook
+from datetime import datetime 
 app = Flask(__name__)
+
+@app.route('/download_xlsx', methods=['GET', 'POST'])
+def download_xlsx():
+    print('날씨정보 다운로드')
+    cities = request.form.getlist('city[]')
+    temps = request.form.getlist('temp[]')
+    weathers = request.form.getlist('weather[]')
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = '추천 여행지 날씨 정보'
+
+    ws.append(['도시', '온도', '날씨'])
+
+    for i in range(len(cities)):
+        ws.append([cities[i], temps[i], weathers[i]])
+    today = datetime.now().strftime('%Y%m%d')
+    wb.save(f'[{today}]excel.xlsx')
+
+    return send_file(f'[{today}]excel.xlsx', as_attachment=True)
+
 @app.route('/recommand_hwang', methods=['GET', 'POST'])
 def recommand_hwang():
     citys = [
@@ -27,7 +49,6 @@ def recommand_hwang():
         # apikey = os.getenv("API_KEY")    # API 키
         lang = "kr"       
         api =  f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
-
 
         # API 요청
         result = requests.get(api)
