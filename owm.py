@@ -21,10 +21,16 @@ weather_translation = {
 }
 
 
-city_names_kor = ["Seoul", "Tokyo", "Washington", "Moscow", "Paris"]
+# city_names_kor = ["Seoul", "Tokyo", "Washington", "Moscow", "Paris"]
+city_names_dict = {
+    'Seoul': '서울',
+    'Tokyo': '도쿄',
+    'Washington': '워싱턴',
+    'Moscow': '모스크바',
+    'Paris': '파리'}
 weather_data = []
 
-for city_name_kor in city_names_kor:
+for city_name_kor in city_names_dict.keys():
     params = {
         "q": city_name_kor, 
         "appid": API_KEY,   
@@ -42,9 +48,8 @@ for city_name_kor in city_names_kor:
         weather_eng = data["weather"][0]["description"] 
 
         weather_kor = weather_translation.get(weather_eng, weather_eng)
-
         weather_data.append({
-            "city_name_kor": city_name_kor,
+            "city_name_kor": city_names_dict[city_name],
             "current_temp": current_temp,
             "feels_like": feels_like,
             "weather_kor": weather_kor
