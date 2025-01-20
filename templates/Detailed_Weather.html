@@ -63,6 +63,12 @@
             transform: translateY(-5px);
         }
 
+        .weather-summary .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
         .weather-summary .value {
             font-size: 1.5em;
             font-weight: bold;
@@ -112,29 +118,29 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>날씨 대시보드</h1>
+            <h1>자세한 날씨</h1>
             <p class="city-name">{{ city }}</p>
         </div>
 
         <div class="weather-summary">
             <div>
-                <p>온도 요약</p>
+                <p class="title">온도</p>
                 <p class="value">{{ weather['온도 요약'] }}</p>
             </div>
             <div>
-                <p>습도</p>
+                <p class="title">습도</p>
                 <p class="value">{{ weather['습도'] }}</p>
             </div>
             <div>
-                <p>풍속</p>
+                <p class="title">풍속</p>
                 <p class="value">{{ weather['풍속'] }}</p>
             </div>
             <div>
-                <p>일출</p>
+                <p class="title">일출</p>
                 <p class="value">{{ weather['일출'] }}</p>
             </div>
             <div>
-                <p>일몰</p>
+                <p class="title">일몰</p>
                 <p class="value">{{ weather['일몰'] }}</p>
             </div>
         </div>
