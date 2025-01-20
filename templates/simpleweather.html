@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>현재 날씨</title>
+</head>
+<body>
+    <span class="nowtime">{{ weather.date }}</span>
+    <span>현재 날씨</span>
+    
+    <h3>{{ weather.region }}</h3>
+    <h3 class="SeoulIcon">아이콘: <img src="{{ weather.icon_url }}" alt="{{ weather.description }}"></h3>
+    <h3 class="SeoulNowtemp">현재기온: {{ weather.current_temp }}°C</h3>
+    <h3 class="SeoulLowtemp">최저기온: {{ weather.low_temp }}°C</h3>
+    <h3 class="SeoulHightemp">최대기온: {{ weather.high_temp }}°C</h3>
+</body>
+</html>
