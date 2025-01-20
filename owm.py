@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+API_KEY = "e2599548788383434c665766baafeb57"
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 weather_translation = {
@@ -21,7 +21,7 @@ weather_translation = {
 }
 
 
-city_names_kor = ["Seoul", "Tokyo", "Wasington", "Moscov", "Paris"]
+city_names_kor = ["Seoul", "Tokyo", "Washington", "Moscow", "Paris"]
 weather_data = []
 
 for city_name_kor in city_names_kor:
