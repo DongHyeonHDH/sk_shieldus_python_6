@@ -9,10 +9,10 @@
 </head>
 <body>
     <h1>여행지 날씨 정보</h1>
-    <a href="{{ url_for('recommand_hwang') }}">
-        <button>추천 나라</button>
-    </a>
-    <button onclick="location.href='https://example.com/hot-countries'">더운나라</button>
-    <button onclick="location.href='https://example.com/cold-countries'">추운나라</button>
+    <button class="button_login" onclick="location.href='/recommand_hwang'">추천 나라</button>
+    <button class="button_login" onclick="location.href='/row'">추운나라</button>
+    <button class="button_login" onclick="location.href='/hi'">더운나라</button>
+    <button class="button_login" onclick="location.href='/detail_weather'">상세정보</button>
 </body>
 </html>
+

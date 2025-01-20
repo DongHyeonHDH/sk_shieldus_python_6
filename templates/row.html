@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <link rel="stylesheet" href="/static/style.css">
+     <!-- <link rel="stylesheet" type ="text/css" href ="{{url_for('static', filename='style.css')}}""> -->
+</head>
+<body>    
+    <h1>추운 여행 도시</h1>
+    <form action = "{{ url_for('download_xlsx') }}" method = "post">
+        <span class="date">Today: {{    weather_data[0]['update_time']  }}</span>
+        <table border= "1">
+            <tr>
+                <td>도시</td>
+                <td>체감 온도</td>
+                <td>날씨</td>
+                <td>자세한 날씨 정보</td>
+            </tr>
+            {% for data in weather_data %}
+            <tr>
+                <td><input type="hidden" name="city[]" value="{{ data['city'] }}">{{ data["city"] }}</td>
+                <td><input type="hidden" name="weather[]" value="{{ data['weather'] }}">{{ data["weather"] }}</td>
+                <td><input type="hidden" name="temp[]" value="{{ data['temp'] }}">{{ data["temp"] }}</td>
+                <td>{{ data["detail"] }}</td> 
+                <td><a href="{{ url_for('static', filename='recommand_' + data['city'] + '.html') }}">자세히 보기</a></td>          
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">엑셀파일 다운로드</button>
+
+    </form>
+</body>
+</html>
