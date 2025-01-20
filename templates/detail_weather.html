@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>날씨 정보</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>{{city}} 날씨 정보</h1>
+    <div class="weather-info">
+        <p>습도: {{ weather['humidity'] }}%</p>
+        <p>풍속: {{ weather['wind_speed'] }}m/s</p>
+        <p>풍향: {{ weather['wind_deg'] }}</p>
+        <p>기압: {{ weather['pressure'] }} hPa</p>
+        <p>최저기온: {{ weather['temp_min'] }}°C</p>
+        <p>최고기온: {{ weather['temp_max'] }}°C</p>
+    </div>
+</body>
+</html>

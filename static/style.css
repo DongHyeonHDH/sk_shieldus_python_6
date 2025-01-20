@@ -2,7 +2,7 @@
     /* 전체 배경 설정 */
     body {
         background: linear-gradient(to bottom, #87CEEB, #4682B4); /* 하늘색에서 푸른색으로 그라데이션 */
-        color: white; /* 글씨를 잘 보이게 흰색으로 설정 */
+        color: black; /* 글씨를 잘 보이게 흰색으로 설정 */
         font-family: Arial, sans-serif;
         margin: 0;
         height: 100vh;
@@ -43,4 +43,15 @@
     button:active {
         transform: scale(0.95); /* 버튼 크기 축소 */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 감소 */
+    }
+    .weather-info {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .weather-info p {
+        font-size: 18px;
+        margin: 10px 0;
     }
