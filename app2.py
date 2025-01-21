@@ -1,23 +1,33 @@
 from flask import Flask, render_template, request, send_file
-from flask import Flask, render_template, request, send_file
 import requests
 import json, os
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 from openpyxl import Workbook
-import ftplib
 
 load_dotenv()
-
+apikey = os.getenv("API_KEY")
 app = Flask(__name__)
 
-@app.route('/download_xlsx', methods=['GET', 'POST'])
-def download_xlsx():
+citys = [
+    "Paris", "New York", "Tokyo", "London", "Rome",
+    "Dubai", "Barcelona", "Istanbul", "Bangkok", "Singapore",
+    "Los Angeles", "Amsterdam", "Hong Kong", "Berlin", "Sydney",
+    "Venice", "Prague", "Seoul", "San Francisco", "Kyoto"
+    ]
+citys_kor = [
+    "파리", "뉴욕", "도쿄", "런던", "로마",
+    "두바이", "바르셀로나", "이스탄불", "방콕", "싱가포르",
+    "로스앤젤레스", "암스테르담", "홍콩", "베를린", "시드니",
+    "베네치아", "프라하", "서울", "샌프란시스코", "교토"
+    ]
 
+@app.route('/download_xlsx', methods=['POST'])
+def download_xlsx():
     # 요청 URL 확인 
     request_url = request.referrer
-    print(f'날씨정보 다운로드 요청 : {request_url}')
+    print(f'날씨정보 다운로드 요청URL : {request_url}')
     today = datetime.now().strftime('%Y%m%d')
 
     wb = Workbook()
@@ -26,10 +36,10 @@ def download_xlsx():
     if request_url[22:] == 'recommand_hwang':
         ws.title = '추천 여행지 날씨 정보'
         save_name = f'[{today}]추천_여행지.xlsx'
-    elif request_url[22:] == 'row':
+    elif request_url[22:] == 'cold_trip_cities':
         ws.title = '추운 여행지 날씨 정보'
         save_name = f'[{today}]추운_여행지.xlsx'
-    elif request_url[22:] == 'hi':
+    elif request_url[22:] == 'hot_trip_cities':
         ws.title = '따듯한 여행지 날씨 정보'
         save_name = f'[{today}]따듯한_여행지.xlsx'
     ws.append(['도시', '온도', '날씨'])
@@ -37,17 +47,12 @@ def download_xlsx():
     cities = request.form.getlist('city[]')
     temps = request.form.getlist('temp[]')
     weathers = request.form.getlist('weather[]')
-
+    
     for i in range(len(cities)):
         ws.append([cities[i], temps[i], weathers[i]])
     wb.save(save_name)
 
-    backup_exel_to_ftp(save_name)
-    
     return send_file(save_name, as_attachment=True)
-
-API_KEY = 'f14638e80f750690b27c459de0db1173'
-#API_KEY = os.getenv('API_KEY')
 
 def translate_day(day_name):
     days = {
@@ -76,29 +81,15 @@ def translate_weather(description):
     }
     return weather_conditions.get(description, description)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     return render_template('/index.html')
 
-@app.route('/recommand_hwang', methods=['GET', 'POST'])
+@app.route('/recommand_hwang', methods=['GET'])
 def recommand_hwang():
-    citys = [
-    "Paris", "New York", "Tokyo", "London", "Rome",
-    "Dubai", "Barcelona", "Istanbul", "Bangkok", "Singapore",
-    "Los Angeles", "Amsterdam", "Hong Kong", "Berlin", "Sydney",
-    "Venice", "Prague", "Seoul", "San Francisco", "Kyoto"
-    ]
-    citys_kor = [
-    "파리", "뉴욕", "도쿄", "런던", "로마",
-    "두바이", "바르셀로나", "이스탄불", "방콕", "싱가포르",
-    "로스앤젤레스", "암스테르담", "홍콩", "베를린", "시드니",
-    "베네치아", "프라하", "서울", "샌프란시스코", "교토"
-    ]
     weather_data = []
     cnt = 0
-    for city in citys:     
-        apikey = 'f14638e80f750690b27c459de0db1173'                             # 해당 지역
-        # apikey = os.getenv("API_KEY")    # API 키
+    for city in citys:
         lang = "kr"       
         api =  f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
 
@@ -115,40 +106,26 @@ def recommand_hwang():
             "temp": data["main"]["feels_like"],
             "weather": data["weather"][0]["description"], 
             "detail": link_city,
-            "update_time": c_time
+            "update_time": c_time,
+            "city2": citys[cnt]
         }
 
         cnt += 1
         if w_data["temp"] > 12 and w_data["temp"] < 29:
             weather_data.append(w_data)    
 
-
-
+    if len(weather_data) == 0:
+        return render_template('no_recommand.html')
+    
     return render_template('recommand_hwang.html', weather_data = weather_data)   
 
-@app.route('/row', methods=['GET', 'POST'])
+@app.route('/cold_trip_cities', methods=['GET', 'POST'])
 def row():
-    citys = [
-    "Paris", "New York", "Tokyo", "London", "Rome",
-    "Dubai", "Barcelona", "Istanbul", "Bangkok", "Singapore",
-    "Los Angeles", "Amsterdam", "Hong Kong", "Berlin", "Sydney",
-    "Venice", "Prague", "Seoul", "San Francisco", "Kyoto"
-    ]
-    citys_kor = [
-    "파리", "뉴욕", "도쿄", "런던", "로마",
-    "두바이", "바르셀로나", "이스탄불", "방콕", "싱가포르",
-    "로스앤젤레스", "암스테르담", "홍콩", "베를린", "시드니",
-    "베네치아", "프라하", "서울", "샌프란시스코", "교토"
-    ]
     weather_data = []
     cnt = 0
     for city in citys:     
-        apikey = 'f14638e80f750690b27c459de0db1173'                             # 해당 지역
-        # apikey = os.getenv("API_KEY")    # API 키
         lang = "kr"       
         api =  f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
-
-
         # API 요청
         result = requests.get(api)
         data = json.loads(result.text) 
@@ -162,42 +139,28 @@ def row():
             "temp": data["main"]["feels_like"],
             "weather": data["weather"][0]["description"], 
             "detail": link_city,
-            "update_time": c_time
+            "update_time": c_time,
+            "city2": citys[cnt]
         }
 
         cnt += 1
-        if w_data["temp"] < 12:
-            weather_data.append(w_data)    
+        if cnt == 6:
+            break
+        if w_data["temp"] < 13:
+            weather_data.append(w_data)
 
+        if len(weather_data) == 0:
+            return render_template('no_recommand.html')
 
+    return render_template('cold_trip_cities.html', weather_data=weather_data)
 
-    return render_template('row.html', weather_data = weather_data)  
-
-@app.route('/hi', methods=['GET', 'POST'])
+@app.route('/hot_trip_cities', methods=['GET'])
 def hi():
-
-
-    citys = [
-    "Paris", "New York", "Tokyo", "London", "Rome",
-    "Dubai", "Barcelona", "Istanbul", "Bangkok", "Singapore",
-    "Los Angeles", "Amsterdam", "Hong Kong", "Berlin", "Sydney",
-    "Venice", "Prague", "Seoul", "San Francisco", "Kyoto"
-    ]
-    citys_kor = [
-    "파리", "뉴욕", "도쿄", "런던", "로마",
-    "두바이", "바르셀로나", "이스탄불", "방콕", "싱가포르",
-    "로스앤젤레스", "암스테르담", "홍콩", "베를린", "시드니",
-    "베네치아", "프라하", "서울", "샌프란시스코", "교토"
-    ]
     weather_data = []
     cnt = 0
     for city in citys:     
-        apikey = 'f14638e80f750690b27c459de0db1173'                             # 해당 지역
-        # apikey = os.getenv("API_KEY")    # API 키
         lang = "kr"       
         api =  f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&lang={lang}&units=metric"
-
-
         # API 요청
         result = requests.get(api)
         data = json.loads(result.text) 
@@ -211,20 +174,40 @@ def hi():
             "temp": data["main"]["feels_like"],
             "weather": data["weather"][0]["description"], 
             "detail": link_city,
-            "update_time": c_time
+            "update_time": c_time,
+            "city2": citys[cnt]
         }
 
         cnt += 1
-        if w_data["temp"] > 29:
-            weather_data.append(w_data)    
+        if cnt == 6:
+            break
+        if w_data["temp"] < 29:
+            weather_data.append(w_data)
+        
+        if len(weather_data) == 0:
+            return render_template('no_recommand.html')
+    
+    if request.method == 'POST':
+        wb = Workbook()
+        ws = wb.active
+        ws.title = '더운 여행지 날씨 정보'
+        today = datetime.now().strftime('%Y%m%d')
+        save_name = f'[{today}]더운_여행지.xlsx'
+        ws.append(['도시', '온도', '날씨'])
 
-    return render_template('hi.html', weather_data = weather_data)
+        for data in weather_data:
+            ws.append([data['city'], data['temp'], data['weather']])
+        wb.save(save_name)
 
-@app.route('/detail_weather')
+        return send_file(save_name, as_attachment=True)
+    
+    return render_template('hot_trip_cities.html', weather_data = weather_data)
+
+@app.route('/detail_weather', methods=['GET'])
 def get_weather_data():
-    city = "Seoul"
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
-    forecast_url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_KEY}&units=metric'
+    city = request.args.get('city')
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apikey}&units=metric'
+    forecast_url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apikey}&units=metric'
     
     response = requests.get(url)
     data = response.json()
@@ -237,8 +220,8 @@ def get_weather_data():
     humidity = data['main']['humidity']
     wind_speed = data['wind']['speed']
     feels_like = round(data['main']['feels_like'], 1)
-    sunrise = datetime.utcfromtimestamp(data['sys']['sunrise']).strftime('%H:%M')
-    sunset = datetime.utcfromtimestamp(data['sys']['sunset']).strftime('%H:%M')
+    sunrise = datetime.fromtimestamp(data['sys']['sunrise'], tz=timezone.utc).strftime('%H:%M')
+    sunset = datetime.fromtimestamp(data['sys']['sunset'], tz=timezone.utc).strftime('%H:%M')
     
     today_weather = {
         "온도 요약": f"{temp_max}°C / {temp_min}°C (체감: {feels_like}°C)",
@@ -249,7 +232,7 @@ def get_weather_data():
     }
     
     weekly_forecast = []
-    current_day = datetime.utcnow()
+    current_day = datetime.now(timezone.utc)
     for i in range(8, len(forecast_data['list']), 8):  # 오늘 날짜를 제외하고 매일 데이터만 선택 (8개 간격)
         day = forecast_data['list'][i]
         date = current_day + timedelta(days=i//8)
@@ -264,7 +247,7 @@ def get_weather_data():
             "날씨": weather,
             "온도": f"{temp}°C",
             "체감 온도": f"{feels_like}°C",
-            "풍속": f"{wind_speed} m/s",
+            "풍속": "약한 바람" if wind_speed <= 10 else "다소 강한 바람" if 10 < wind_speed <= 15 else "매우 강한 바람" if 25 < wind_speed <= 30 else f"{wind_speed} m/s",
             "아이콘": icon,
             "최고 온도": f"{temp_max}°C",
             "최저 온도": f"{temp_min}°C",
@@ -272,27 +255,12 @@ def get_weather_data():
             "일출": today_weather["일출"],
             "일몰": today_weather["일몰"]
         })
+    if city in citys:
+        city_kor = citys_kor[citys.index(city)]
+    else:
+        city_kor = city
     
-    return render_template('Detailed_Weather.html', weather=today_weather, city=city, weekly_forecast=weekly_forecast)
-
-def backup_exel_to_ftp(filename): # 정우철: FTP서버로 엑셀파일 백업하는 함수, 데코레이터로 라우팅 되는 함수가 아닌 특정 함수에서 호출하는 함수
-    
-    load_dotenv()
-
-    DIR = os.getcwd()
-    file_path = os.path.join(DIR, filename)
-
-    host_ip = os.getenv("FTP_HOST_IP")
-    host_id = os.getenv("FTP_LOGIN_ID")
-    host_pw = os.getenv("FTP_LOGIN_PWD")
-
-    with ftplib.FTP(host_ip) as ftp:
-        ftp.login(host_id, host_pw)
-        with open(file_path, "rb") as file:
-            ftp.storbinary("STOR " + filename, file)
-            ftp.retrlines("LIST")
-
-    print(f"{filename} 파일이 FTP 서버로 백업되었습니다.")
+    return render_template('Detailed_Weather.html', weather=today_weather, city=city_kor, weekly_forecast=weekly_forecast)
 
 if __name__ == '__main__':
     app.run(debug=True)

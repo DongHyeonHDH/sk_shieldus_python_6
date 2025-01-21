@@ -10,8 +10,8 @@
 </head>
 <body>    
     <h1>추운 도시</h1>
+    <span class="date">Today: {{    weather_data[0]['update_time']  }}</span>
     <form action = "{{ url_for('download_xlsx') }}" method = "post">
-        <span class="date">Today: {{    weather_data[0]['update_time']  }}</span>
         <table border= "1">
             <tr>
                 <td>도시</td>

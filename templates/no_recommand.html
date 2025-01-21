@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추천 도시 없음</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #eac3b8, #e7a3ae, #b48b94);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .suggestions {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6c5b7b;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #355c7d;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>현재는 추천하는 도시가 없어요</h1>
+        <p>다른 정보를 탐색하시거나, 새로운 도시 추천을 기다려 주세요!</p>
+        <div class="suggestions">
+
+            <button onclick="location.href='/'">다른 추천 항목 확인하러가기</button>
+        </div>
+    </div>
+</body>
+</html>

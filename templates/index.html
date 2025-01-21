@@ -1,18 +1,65 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/style.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>여행지 추천</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 </head>
+<style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('/static/img/star.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+</style>
 <body>
-    <h1>여행지 날씨 정보</h1>
-    <button class="button_login" onclick="location.href='/recommand_hwang'">추천 나라</button>
-    <button class="button_login" onclick="location.href='/row'">추운나라</button>
-    <button class="button_login" onclick="location.href='/hi'">더운나라</button>
-    <button class="button_login" onclick="location.href='/detail_weather'">상세정보</button>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>여행지 추천</strong></li>
+        </ul>
+        <ul>
+            <li><a href="recommand_hwang">꽃의 나라</a></li>
+            <li><a href="hot_trip_cities">사막의 나라</a></li>
+            <li><a href="cold_trip_cities">눈의 나라</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="grid">
+            <section id="flowers">
+                <hgroup>
+                    <h2>꽃의 나라</h2>
+                    <h3>다채로운 파스텔 컬러와 화려한 꽃들</h3>
+                </hgroup>
+                <p>꽃의 나라에서는 아름다운 자연과 풍부한 색감을 경험할 수 있습니다.</p>
+                <figure>
+                    <img src="{{ url_for('static', filename='img/spring.png') }}" alt="꽃의 나라">
+                </figure>
+            </section>
+            <section id="desert">
+                <hgroup>
+                    <h2>사막의 나라</h2>
+                    <h3>따뜻한 갈색 계열과 금빛</h3>
+                </hgroup>
+                <p>사막의 나라에서는 광활한 모래 언덕과 태양의 황금빛을 즐길 수 있습니다.</p>
+                <figure>
+                    <img src="{{ url_for('static', filename='img/desert.png') }}" alt="꽃의 나라">
+                </figure>
+            </section>
+            <section id="snow">
+                <hgroup>
+                    <h2>눈의 나라</h2>
+                    <h3>차가운 화이트와 블루 계열</h3>
+                </hgroup>
+                <p>눈의 나라에서는 순백의 풍경과 맑고 차가운 공기를 느낄 수 있습니다.</p>
+                <figure>
+                    <img src="{{ url_for('static', filename='img/winter.jpg') }}" alt="꽃의 나라">
+                </figure>
+            </section>
+        </div>
+    </main>
 </body>
 </html>
-

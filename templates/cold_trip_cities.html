@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>추천 여행 도시</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>눈의 나라</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background: url('/img/spring.jpg') no-repeat center center fixed;
+            background: url('/img/winter.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #333;
         }
@@ -55,11 +55,13 @@
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #0cc4d1;
+            color: #fff;
         }
 
         td {
-            background-color: #fff;
+            background-color: #f2f2f2;
+            font-weight: bold;
         }
 
         tr:nth-child(even) {
@@ -87,12 +89,12 @@
         }
     </style>
 </head>
-<body>
+<body>    
     <div class="container">
         <div class="header">
-            <h1>추천 여행 도시</h1>
+            <h1>추운 도시 여행 추천</h1>
+            <span class="date">Today: {{ weather_data[0]['update_time'] }}</span>
         </div>
-        <span class="date">Today: {{ weather_data[0]['update_time'] }}</span>
         <form action="{{ url_for('download_xlsx') }}" method="post">
             <table>
                 <tr>
@@ -103,19 +105,9 @@
                 </tr>
                 {% for data in weather_data %}
                 <tr>
-                    <td>
-                        <input type="hidden" name="city[]" value="{{ data['city'] }}">
-                        {{ data["city"] }}
-                    </td>
-                    <td>
-                        <input type="hidden" name="temp[]" value="{{ data['temp'] }}">
-                        {{ data["temp"] }}
-                    </td>
-                    <td>
-                        <input type="hidden" name="weather[]" value="{{ data['weather'] }}">
-                        {{ data["weather"] }}
-                    </td>
-                    <td>{{ data["detail"] }}</td>
+                    <td><input type="hidden" name="city[]" value="{{ data['city'] }}">{{ data["city"] }}</td>
+                    <td><input type="hidden" name="temp[]" value="{{ data['temp'] }}">{{ data["temp"] }}</td>
+                    <td><input type="hidden" name="weather[]" value="{{ data['weather'] }}">{{ data["weather"] }}</td>
                     <td><a href="{{ url_for('get_weather_data', city=data['city2']) }}">자세히 보기</a></td>
                 </tr>
                 {% endfor %}
